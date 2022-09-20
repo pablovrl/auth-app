@@ -20,10 +20,7 @@ export default async function handler(
         return res.status(400).json({ error: "User not found" });
       }
 
-      const isPasswordCorrect = bcrypt.compareSync(
-        password,
-        user.hashedPassword
-      );
+      const isPasswordCorrect = bcrypt.compareSync(password, user.password);
 
       if (!isPasswordCorrect) {
         return res.status(400).json({ error: "Invalid password" });

@@ -10,8 +10,8 @@ export default async function handler(
   const { db } = await connecToDatabase();
   switch (req.method) {
     case "POST": {
-      const { email, password } = req.body;
-      if (!email || !password) {
+      const { name, email, password } = req.body;
+      if (!name || !email || !password) {
         return res.status(400).json({ error: "Missing email or password" });
       }
 
@@ -21,9 +21,14 @@ export default async function handler(
       }
 
       const hashedPassword = bcrypt.hashSync(password, 10);
-      await db
-        .collection("users")
-        .insertOne({ email, hashedPassword, type: "admin" });
+      await db.collection("users").insertOne({
+        name,
+        email,
+        password: hashedPassword,
+        type: "admin",
+        phone: "",
+        photo: "",
+      });
       return res.status(201).json({ message: "User created" });
     }
     default:
