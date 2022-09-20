@@ -16,7 +16,11 @@ import {
 } from "@chakra-ui/react";
 import Link from "next/link";
 import { Formik, Form } from "formik";
-import { validateEmail, validatePassword } from "../../utils/validations";
+import {
+  validateEmail,
+  validatePassword,
+  validateName,
+} from "../../utils/validations";
 import { ValidatedInput } from "../components/ValidatedInput";
 import axios from "axios";
 
@@ -46,14 +50,16 @@ const Register: NextPage = () => {
   const { isOpen, onClose, onOpen } = useDisclosure();
   const toast = useToast();
   const handleSubmit = async ({
+    name,
     email,
     password,
   }: {
+    name: string;
     email: string;
     password: string;
   }) => {
     try {
-      await axios.post("/api/register", { email, password });
+      await axios.post("/api/register", { name, email, password });
       onOpen();
     } catch (error) {
       toast({
@@ -72,12 +78,20 @@ const Register: NextPage = () => {
       <Heading mb={10}>Register</Heading>
       <Formik
         onSubmit={handleSubmit}
-        initialValues={{ email: "", password: "" }}
+        initialValues={{ email: "", password: "", name: "" }}
       >
         {({ isSubmitting, errors, touched }) => (
           <Form>
             <VStack spacing={8}>
               {isOpen && <AccountCreatedAlert onClose={onClose} />}
+              <ValidatedInput
+                name="name"
+                label="Name"
+                validate={validateName}
+                errors={errors.name}
+                touched={touched.name}
+                placeholder="John Doe"
+              />
               <ValidatedInput
                 name="email"
                 label="Email"
