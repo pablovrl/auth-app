@@ -17,3 +17,15 @@ export function validatePassword(value: string) {
   }
   return error;
 }
+
+export function validateName(value: string) {
+  let error;
+  if (!value) {
+    error = "Name is required";
+  } else if (value.length < 3) {
+    error = "Name must be at least 3 characters";
+  } else if (!/^[a-zA-Z ]+$/.test(value)) {
+    error = "Name must contain only characters";
+  }
+  return error;
+}
