@@ -10,6 +10,7 @@ type ValidatedInputProps = {
   errors?: string;
   touched?: boolean;
   type?: HTMLInputTypeAttribute;
+  placeholder?: string;
 };
 
 export const ValidatedInput = ({
@@ -19,13 +20,18 @@ export const ValidatedInput = ({
   errors,
   touched,
   type,
+  placeholder,
 }: ValidatedInputProps) => {
   return (
     <Field name={name} validate={validate}>
       {({ field }: any) => (
         <FormControl>
           <FormLabel>{label}</FormLabel>
-          <Input {...field} type={type ? type : "text"} />
+          <Input
+            {...field}
+            type={type ? type : "text"}
+            placeholder={placeholder}
+          />
           {errors && touched && <ErrorMessage>{errors}</ErrorMessage>}
         </FormControl>
       )}

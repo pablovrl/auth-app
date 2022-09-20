@@ -52,6 +52,7 @@ const Login: NextPage = () => {
                 validate={validateEmail}
                 errors={errors.email}
                 touched={touched.email}
+                placeholder="example@gmail.com"
               />
               <ValidatedInput
                 name="password"
