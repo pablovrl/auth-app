@@ -1,35 +1,90 @@
 import type { NextPage } from "next";
 import { FormCard } from "../components/FormCard";
 import {
+  Box,
+  Flex,
   Heading,
   VStack,
   Text,
   Button,
   Link as ChakraLink,
+  Alert,
+  AlertIcon,
+  CloseButton,
+  useDisclosure,
+  useToast,
 } from "@chakra-ui/react";
 import Link from "next/link";
 import { Formik, Form } from "formik";
 import { validateEmail, validatePassword } from "../../utils/validations";
 import { ValidatedInput } from "../components/ValidatedInput";
+import axios from "axios";
+
+const AccountCreatedAlert = ({ onClose }: { onClose: () => void }) => (
+  <Alert status="success" justifyContent={"space-between"}>
+    <Flex>
+      <AlertIcon />
+      <Box>
+        Your account has been createad successfully. Now you can{" "}
+        <Link href={"/login"}>
+          <ChakraLink color={"blue.500"}>login</ChakraLink>
+        </Link>
+        .
+      </Box>
+    </Flex>
+    <CloseButton
+      alignSelf="flex-start"
+      position="relative"
+      right={-1}
+      top={-1}
+      onClick={onClose}
+    />
+  </Alert>
+);
 
 const Register: NextPage = () => {
-  const handleSubmit = async () => {};
+  const { isOpen, onClose, onOpen } = useDisclosure();
+  const toast = useToast();
+  const handleSubmit = async ({
+    email,
+    password,
+  }: {
+    email: string;
+    password: string;
+  }) => {
+    try {
+      await axios.post("/api/register", { email, password });
+      onOpen();
+    } catch (error) {
+      toast({
+        title: "Cannot register",
+        description: "Please use another email",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+        position: "top",
+      });
+    }
+  };
+
   return (
     <FormCard>
       <Heading mb={10}>Register</Heading>
       <Formik
         onSubmit={handleSubmit}
-        initialValues={{ email: "", password: "", name: "", phone: "" }}
+        initialValues={{ email: "", password: "" }}
       >
         {({ isSubmitting, errors, touched }) => (
           <Form>
             <VStack spacing={8}>
+              {isOpen && <AccountCreatedAlert onClose={onClose} />}
               <ValidatedInput
                 name="email"
                 label="Email"
                 validate={validateEmail}
                 errors={errors.email}
                 touched={touched.email}
+                placeholder="example@gmail.com"
               />
               <ValidatedInput
                 name="password"
@@ -39,32 +94,18 @@ const Register: NextPage = () => {
                 touched={touched.password}
                 type="password"
               />
-              <ValidatedInput
-                name="name"
-                label="Full Name"
-                validate={validatePassword}
-                errors={errors.name}
-                touched={touched.name}
-              />
-              <ValidatedInput
-                name="phone"
-                label="Phone"
-                validate={validatePassword}
-                errors={errors.phone}
-                touched={touched.phone}
-              />
               <Button
                 isLoading={isSubmitting}
                 w="full"
                 colorScheme={"twitter"}
                 type="submit"
               >
-                Register
+                Create account
               </Button>
               <Text>
                 Already have an account?{" "}
                 <Link href={"/login"}>
-                  <ChakraLink color="blue.500">Log in</ChakraLink>
+                  <ChakraLink color="blue.500">Login</ChakraLink>
                 </Link>
               </Text>
             </VStack>
