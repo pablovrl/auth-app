@@ -3,18 +3,18 @@ import { Box, Container } from "@chakra-ui/react";
 
 export const FormCard = ({ children }: { children: React.ReactNode }) => (
   <Container
-    maxW="container.lg"
+    maxW={{ md: "container.lg" }}
     minH="100vh"
     display="flex"
-    alignItems="center"
+    alignItems={{ md: "center" }}
     justifyContent="center"
   >
     <Box
-      w={"xl"}
-      border="2px"
-      p={10}
+      w={{ base: "full", md: "xl" }}
+      border={{ base: "0px", md: "2px" }}
+      p={{ base: 4, md: 10 }}
+      borderColor={{ md: "gray.100" }}
       borderRadius="3xl"
-      borderColor={"gray.100"}
     >
       {children}
     </Box>
