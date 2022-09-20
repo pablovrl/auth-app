@@ -12,6 +12,8 @@
     "@chakra-ui/react": "^2.3.4",
     "@emotion/react": "^11.10.4",
     "@emotion/styled": "^11.10.4",
+    "@fontsource/dm-sans": "^4.5.8",
+    "@fontsource/noto-sans": "^4.5.11",
     "axios": "^0.27.2",
     "bcrypt": "^5.0.1",
     "formik": "^2.2.9",
