@@ -2,11 +2,15 @@
 
 Web application created to learn how authentication (using cookies) and protected routes works.
 
+## To Do's
+- [ ] Upload user image.
+- [ ] Update user personal info.
+
 ## Built With
 
-- [Next.js]()
-- [ChakraIU]()
-- [MongoDB]()
+- [Next.js](https://nextjs.org/)
+- [Chakra UI](https://chakra-ui.com/)
+- [MongoDB](https://www.mongodb.com/)
 
 ## How to use
 
