@@ -9,7 +9,11 @@ export const FormCard = ({ children }: { children: React.ReactNode }) => (
     alignItems={{ md: "center" }}
     justifyContent="center"
   >
-    <Flex flexDirection={"column"}>
+    <Flex
+      flexDirection={"column"}
+      w={{ base: "full", md: "auto" }}
+      justifyContent={{ base: "space-between" }}
+    >
       <Box
         w={{ base: "full", md: "xl" }}
         border={{ base: "0px", md: "2px" }}
@@ -19,7 +23,12 @@ export const FormCard = ({ children }: { children: React.ReactNode }) => (
       >
         {children}
       </Box>
-      <Text mt={2} color={"gray.400"} fontSize="sm">
+      <Text
+        mt={{ md: 2 }}
+        mb={{ base: 4, md: 0 }}
+        color={"gray.400"}
+        fontSize="sm"
+      >
         created by Pablo Villarroel ;)
       </Text>
     </Flex>
