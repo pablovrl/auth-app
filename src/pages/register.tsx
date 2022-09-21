@@ -20,6 +20,7 @@ import {
   validateEmail,
   validatePassword,
   validateName,
+  validatePhone,
 } from "../../utils/validations";
 import { ValidatedInput } from "../components/ValidatedInput";
 import axios from "axios";
@@ -53,13 +54,15 @@ const Register: NextPage = () => {
     name,
     email,
     password,
+    phone,
   }: {
     name: string;
     email: string;
     password: string;
+    phone: string;
   }) => {
     try {
-      await axios.post("/api/register", { name, email, password });
+      await axios.post("/api/register", { name, phone, email, password });
       onOpen();
     } catch (error) {
       toast({
@@ -78,7 +81,7 @@ const Register: NextPage = () => {
       <Heading mb={10}>Register</Heading>
       <Formik
         onSubmit={handleSubmit}
-        initialValues={{ email: "", password: "", name: "" }}
+        initialValues={{ email: "", password: "", name: "", phone: "" }}
       >
         {({ isSubmitting, errors, touched }) => (
           <Form>
@@ -91,6 +94,14 @@ const Register: NextPage = () => {
                 errors={errors.name}
                 touched={touched.name}
                 placeholder="John Doe"
+              />
+              <ValidatedInput
+                name="phone"
+                label="Phone"
+                validate={validatePhone}
+                errors={errors.phone}
+                touched={touched.phone}
+                placeholder="912345678"
               />
               <ValidatedInput
                 name="email"

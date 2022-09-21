@@ -10,9 +10,9 @@ export default async function handler(
   const { db } = await connecToDatabase();
   switch (req.method) {
     case "POST": {
-      const { name, email, password } = req.body;
-      if (!name || !email || !password) {
-        return res.status(400).json({ error: "Missing email or password" });
+      const { name, phone, email, password } = req.body;
+      if (!name || !phone || !email || !password) {
+        return res.status(400).json({ message: "All fields are required" });
       }
 
       const isExistingUser = await db.collection("users").findOne({ email });
@@ -24,9 +24,9 @@ export default async function handler(
       await db.collection("users").insertOne({
         name,
         email,
+        phone,
         password: hashedPassword,
         type: "admin",
-        phone: "",
         photo: "",
       });
       return res.status(201).json({ message: "User created" });

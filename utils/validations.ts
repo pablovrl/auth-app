@@ -29,3 +29,15 @@ export function validateName(value: string) {
   }
   return error;
 }
+
+export function validatePhone(value: string) {
+  let error;
+  if (!value) {
+    error = "Phone number is required";
+  } else if (value.length !== 9) {
+    error = "Phone number must be 9 digits";
+  } else if (!/^[0-9]+$/.test(value)) {
+    error = "Phone number must contain only numbers";
+  }
+  return error;
+}
