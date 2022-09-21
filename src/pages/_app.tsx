@@ -3,7 +3,7 @@ import { ChakraProvider, extendTheme } from "@chakra-ui/react";
 import axios from "axios";
 import "@fontsource/noto-sans";
 
-axios.defaults.baseURL = process.env.PROD_URL || process.env.DEV_URL;
+axios.defaults.baseURL = process.env.VERCEL_URL || process.env.DEV_URL;
 
 const theme = extendTheme({
   fonts: {
