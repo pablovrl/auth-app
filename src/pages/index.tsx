@@ -11,13 +11,12 @@ import {
   GridItem,
 } from "@chakra-ui/react";
 import Navbar from "../components/Navbar";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const token = getCookie(context);
   const payload: any = verifyToken(token);
-  const url = process.env.VERCEL_URL || process.env.DEV_URL;
 
   if (!payload) {
     return {
@@ -27,10 +26,10 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       },
     };
   }
-  const { data } = await axios.get(`${url}/api/user/${payload._id}`);
+
   return {
     props: {
-      user: data,
+      userId: payload._id,
     },
   };
 };
@@ -56,17 +55,37 @@ const ProfileInfo = ({
 );
 
 type HomeProps = {
-  user: {
-    _id: string;
-    name: string;
-    email: string;
-    password: string;
-    type: string;
-    phone: string;
-  };
+  userId: string;
 };
 
-const Home: NextPage<HomeProps> = ({ user }) => {
+type User = {
+  _id: string;
+  name: string;
+  email: string;
+  password: string;
+  type: string;
+  phone: string;
+};
+
+const Home: NextPage<HomeProps> = ({ userId }) => {
+  const [user, setUser] = useState<User>({
+    _id: "",
+    name: "",
+    email: "",
+    password: "",
+    type: "",
+    phone: "",
+  });
+
+  useEffect(() => {
+    axios
+      .get(`/api/user/${userId}`)
+      .then((res) => {
+        setUser(res.data);
+      })
+      .catch((err) => console.log(err));
+  }, [userId]);
+
   return (
     <>
       <Navbar name={user.name} />
