@@ -12,10 +12,12 @@ import {
 } from "@chakra-ui/react";
 import Navbar from "../components/Navbar";
 import React from "react";
+import axios from "axios";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const token = getCookie(context);
-  const payload = verifyToken(token);
+  const payload: any = verifyToken(token);
+
   if (!payload) {
     return {
       redirect: {
@@ -24,9 +26,12 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       },
     };
   }
+  const { data } = await axios.get(
+    `http://localhost:3000/api/user/${payload._id}`
+  );
   return {
     props: {
-      user: payload,
+      user: data,
     },
   };
 };
@@ -54,7 +59,11 @@ const ProfileInfo = ({
 type HomeProps = {
   user: {
     _id: string;
+    name: string;
+    photo: string;
+    password: string;
     email: string;
+    phone: string;
     type: string;
   };
 };
@@ -62,7 +71,7 @@ type HomeProps = {
 const Home: NextPage<HomeProps> = ({ user }) => {
   return (
     <>
-      <Navbar />
+      <Navbar name={user.name} />
       <Container pt={20} pb={5} maxW={{ md: "container.md" }}>
         <Flex flexDir={"column"} alignItems="center">
           <Heading mb={2}>Personal Info</Heading>
@@ -92,16 +101,16 @@ const Home: NextPage<HomeProps> = ({ user }) => {
           <Box bgColor={"gray.300"} w={"20"} h={20} />
         </ProfileInfo>
         <ProfileInfo label="name">
-          <Text>John Doe</Text>
+          <Text>{user.name}</Text>
         </ProfileInfo>
         <ProfileInfo label="email">
-          <Text>example@example.com</Text>
+          <Text>{user.email}</Text>
         </ProfileInfo>
         <ProfileInfo label="password">
           <Text>********</Text>
         </ProfileInfo>
         <ProfileInfo label="phone">
-          <Text>9 5685 6577</Text>
+          <Text>{user.phone}</Text>
         </ProfileInfo>
       </Container>
     </>
