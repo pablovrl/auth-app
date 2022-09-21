@@ -13,6 +13,7 @@ import {
 import Navbar from "../components/Navbar";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { CreatedBy } from "../components/CreatedBy";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const token = getCookie(context);
@@ -89,46 +90,56 @@ const Home: NextPage<HomeProps> = ({ userId }) => {
   return (
     <>
       <Navbar name={user.name} />
-      <Container pt={20} pb={5} maxW={{ md: "container.md" }}>
+      <Container pt={20} pb={5} maxW={{ md: "container.lg" }}>
         <Flex flexDir={"column"} alignItems="center">
-          <Heading mb={2}>Personal Info</Heading>
+          <Heading mb={4}>Personal info</Heading>
           <Text>Basic info, like your name and photo</Text>
         </Flex>
-        <Flex mt={10} alignItems="center">
-          <Grid templateColumns="repeat(3, 1fr)" gap={4} w="full">
-            <GridItem colSpan={2}>
-              <Heading mb={1}>Profile</Heading>
-              <Text color="gray.500">
-                Some info may be visible to other people
-              </Text>
-            </GridItem>
-            <GridItem
-              colSpan={1}
-              display="flex"
-              alignItems={"center"}
-              justifyContent="flex-end"
-            >
-              <Button variant="outline" w={{ base: "100%", md: "36" }}>
-                Edit
-              </Button>
-            </GridItem>
-          </Grid>
-        </Flex>
-        <ProfileInfo label="photo">
-          <Box bgColor={"gray.300"} w={"20"} h={20} />
-        </ProfileInfo>
-        <ProfileInfo label="name">
-          <Text>{user.name}</Text>
-        </ProfileInfo>
-        <ProfileInfo label="email">
-          <Text>{user.email}</Text>
-        </ProfileInfo>
-        <ProfileInfo label="password">
-          <Text>********</Text>
-        </ProfileInfo>
-        <ProfileInfo label="phone">
-          <Text>{user.phone}</Text>
-        </ProfileInfo>
+        <Box
+          mt={10}
+          border={{ md: "1px" }}
+          borderRadius={"3xl"}
+          borderColor={{ md: "gray.100" }}
+          px={{ md: 16 }}
+          py={{ md: 8 }}
+        >
+          <Flex alignItems="center">
+            <Grid templateColumns="repeat(3, 1fr)" gap={4} w="full">
+              <GridItem colSpan={2}>
+                <Heading mb={1}>Profile</Heading>
+                <Text color="gray.500">
+                  Some info may be visible to other people
+                </Text>
+              </GridItem>
+              <GridItem
+                colSpan={1}
+                display="flex"
+                alignItems={"center"}
+                justifyContent="flex-end"
+              >
+                <Button variant="outline" w={{ base: "100%", md: "36" }}>
+                  Edit
+                </Button>
+              </GridItem>
+            </Grid>
+          </Flex>
+          <ProfileInfo label="photo">
+            <Box bgColor={"gray.300"} w={"20"} h={20} />
+          </ProfileInfo>
+          <ProfileInfo label="name">
+            <Text>{user.name}</Text>
+          </ProfileInfo>
+          <ProfileInfo label="email">
+            <Text>{user.email}</Text>
+          </ProfileInfo>
+          <ProfileInfo label="password">
+            <Text>********</Text>
+          </ProfileInfo>
+          <ProfileInfo label="phone">
+            <Text>{user.phone}</Text>
+          </ProfileInfo>
+        </Box>
+        <CreatedBy />
       </Container>
     </>
   );
