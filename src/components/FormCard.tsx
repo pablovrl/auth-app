@@ -1,5 +1,12 @@
 import React from "react";
-import { Flex, Text, Box, Container } from "@chakra-ui/react";
+import {
+  Flex,
+  Text,
+  Box,
+  Container,
+  Link as ChakraLink,
+} from "@chakra-ui/react";
+import Link from "next/link";
 
 export const FormCard = ({ children }: { children: React.ReactNode }) => (
   <Container
@@ -29,7 +36,14 @@ export const FormCard = ({ children }: { children: React.ReactNode }) => (
         color={"gray.400"}
         fontSize="sm"
       >
-        created by Pablo Villarroel ;)
+        created by{" "}
+        <ChakraLink
+          href="https://pablovillarroel.xyz"
+          target="_blank"
+          color="blue.500"
+        >
+          Pablo Villarroel ;)
+        </ChakraLink>
       </Text>
     </Flex>
   </Container>
