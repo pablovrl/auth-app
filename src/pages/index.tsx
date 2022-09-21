@@ -19,19 +19,18 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const payload: any = verifyToken(token);
   const url = process.env.VERCEL_URL || process.env.DEV_URL;
 
-  // if (!payload) {
-  //   return {
-  //     redirect: {
-  //       destination: "/login",
-  //       permanent: false,
-  //     },
-  //   };
-  // }
-  // const { data } = await axios.get(`/api/user/${payload._id}`);
+  if (!payload) {
+    return {
+      redirect: {
+        destination: "/login",
+        permanent: false,
+      },
+    };
+  }
+  const { data } = await axios.get(`${url}/api/user/${payload._id}`);
   return {
     props: {
-      user: payload,
-      url,
+      user: data,
     },
   };
 };
@@ -59,14 +58,18 @@ const ProfileInfo = ({
 type HomeProps = {
   user: {
     _id: string;
+    name: string;
+    email: string;
+    password: string;
+    type: string;
+    phone: string;
   };
-  url: string;
 };
 
-const Home: NextPage<HomeProps> = ({ user, url }) => {
+const Home: NextPage<HomeProps> = ({ user }) => {
   return (
     <>
-      <Navbar name={url} />
+      <Navbar name={user.name} />
       <Container pt={20} pb={5} maxW={{ md: "container.md" }}>
         <Flex flexDir={"column"} alignItems="center">
           <Heading mb={2}>Personal Info</Heading>
@@ -95,15 +98,17 @@ const Home: NextPage<HomeProps> = ({ user, url }) => {
         <ProfileInfo label="photo">
           <Box bgColor={"gray.300"} w={"20"} h={20} />
         </ProfileInfo>
-        <ProfileInfo label="name">{/* <Text>{user.name}</Text> */}</ProfileInfo>
+        <ProfileInfo label="name">
+          <Text>{user.name}</Text>
+        </ProfileInfo>
         <ProfileInfo label="email">
-          {/* <Text>{user.email}</Text> */}
+          <Text>{user.email}</Text>
         </ProfileInfo>
         <ProfileInfo label="password">
-          {/* <Text>********</Text> */}
+          <Text>********</Text>
         </ProfileInfo>
         <ProfileInfo label="phone">
-          {/* <Text>{user.phone}</Text> */}
+          <Text>{user.phone}</Text>
         </ProfileInfo>
       </Container>
     </>
