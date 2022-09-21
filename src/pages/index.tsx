@@ -16,20 +16,20 @@ import axios from "axios";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const token = getCookie(context);
-  const payload: any = verifyToken(token);
+  // const payload: any = verifyToken(token);
 
-  if (!payload) {
-    return {
-      redirect: {
-        destination: "/login",
-        permanent: false,
-      },
-    };
-  }
-  const { data } = await axios.get(`/api/user/${payload._id}`);
+  // if (!payload) {
+  //   return {
+  //     redirect: {
+  //       destination: "/login",
+  //       permanent: false,
+  //     },
+  //   };
+  // }
+  // const { data } = await axios.get(`/api/user/${payload._id}`);
   return {
     props: {
-      user: data,
+      token,
     },
   };
 };
@@ -55,21 +55,13 @@ const ProfileInfo = ({
 );
 
 type HomeProps = {
-  user: {
-    _id: string;
-    name: string;
-    photo: string;
-    password: string;
-    email: string;
-    phone: string;
-    type: string;
-  };
+  token: string;
 };
 
-const Home: NextPage<HomeProps> = ({ user }) => {
+const Home: NextPage<HomeProps> = ({ token }) => {
   return (
     <>
-      <Navbar name={user.name} />
+      <Navbar name={token} />
       <Container pt={20} pb={5} maxW={{ md: "container.md" }}>
         <Flex flexDir={"column"} alignItems="center">
           <Heading mb={2}>Personal Info</Heading>
@@ -98,17 +90,15 @@ const Home: NextPage<HomeProps> = ({ user }) => {
         <ProfileInfo label="photo">
           <Box bgColor={"gray.300"} w={"20"} h={20} />
         </ProfileInfo>
-        <ProfileInfo label="name">
-          <Text>{user.name}</Text>
-        </ProfileInfo>
+        <ProfileInfo label="name">{/* <Text>{user.name}</Text> */}</ProfileInfo>
         <ProfileInfo label="email">
-          <Text>{user.email}</Text>
+          {/* <Text>{user.email}</Text> */}
         </ProfileInfo>
         <ProfileInfo label="password">
-          <Text>********</Text>
+          {/* <Text>********</Text> */}
         </ProfileInfo>
         <ProfileInfo label="phone">
-          <Text>{user.phone}</Text>
+          {/* <Text>{user.phone}</Text> */}
         </ProfileInfo>
       </Container>
     </>
