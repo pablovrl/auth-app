@@ -10,7 +10,7 @@ import {
 } from "@chakra-ui/react";
 import { logout } from "../../utils/auth";
 
-const Navbar = () => {
+const Navbar = ({ name }: { name: string }) => {
   return (
     <Box
       as="nav"
@@ -24,7 +24,7 @@ const Navbar = () => {
         <Flex justifyContent={"space-between"} w="100%">
           <Heading fontSize={"lg"}>Auth-App</Heading>
           <Menu>
-            <MenuButton>John Doe</MenuButton>
+            <MenuButton>{name}</MenuButton>
             <MenuList>
               <MenuItem>My profile</MenuItem>
               <MenuItem onClick={logout}>Logout</MenuItem>
