@@ -16,7 +16,7 @@ import axios from "axios";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const token = getCookie(context);
-  // const payload: any = verifyToken(token);
+  const payload: any = verifyToken(token);
 
   // if (!payload) {
   //   return {
@@ -29,7 +29,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   // const { data } = await axios.get(`/api/user/${payload._id}`);
   return {
     props: {
-      token,
+      user: payload,
     },
   };
 };
@@ -55,13 +55,15 @@ const ProfileInfo = ({
 );
 
 type HomeProps = {
-  token: string;
+  user: {
+    _id: string;
+  };
 };
 
-const Home: NextPage<HomeProps> = ({ token }) => {
+const Home: NextPage<HomeProps> = ({ user }) => {
   return (
     <>
-      <Navbar name={token} />
+      <Navbar name={user._id} />
       <Container pt={20} pb={5} maxW={{ md: "container.md" }}>
         <Flex flexDir={"column"} alignItems="center">
           <Heading mb={2}>Personal Info</Heading>
