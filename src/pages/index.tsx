@@ -17,6 +17,7 @@ import axios from "axios";
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const token = getCookie(context);
   const payload: any = verifyToken(token);
+  const url = process.env.VERCEL_URL || process.env.DEV_URL;
 
   // if (!payload) {
   //   return {
@@ -30,6 +31,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   return {
     props: {
       user: payload,
+      url,
     },
   };
 };
@@ -58,12 +60,13 @@ type HomeProps = {
   user: {
     _id: string;
   };
+  url: string;
 };
 
-const Home: NextPage<HomeProps> = ({ user }) => {
+const Home: NextPage<HomeProps> = ({ user, url }) => {
   return (
     <>
-      <Navbar name={user._id} />
+      <Navbar name={url} />
       <Container pt={20} pb={5} maxW={{ md: "container.md" }}>
         <Flex flexDir={"column"} alignItems="center">
           <Heading mb={2}>Personal Info</Heading>
