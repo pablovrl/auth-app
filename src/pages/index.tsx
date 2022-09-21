@@ -26,9 +26,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       },
     };
   }
-  const { data } = await axios.get(
-    `http://localhost:3000/api/user/${payload._id}`
-  );
+  const { data } = await axios.get(`/api/user/${payload._id}`);
   return {
     props: {
       user: data,
