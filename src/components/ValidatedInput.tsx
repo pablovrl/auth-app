@@ -25,7 +25,7 @@ export const ValidatedInput = ({
   return (
     <Field name={name} validate={validate}>
       {({ field }: any) => (
-        <FormControl>
+        <FormControl isRequired>
           <FormLabel>{label}</FormLabel>
           <Input
             {...field}
