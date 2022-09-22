@@ -24,31 +24,12 @@ import {
 } from "../../utils/validations";
 import { ValidatedInput } from "../components/ValidatedInput";
 import axios from "axios";
-
-const AccountCreatedAlert = ({ onClose }: { onClose: () => void }) => (
-  <Alert status="success" justifyContent={"space-between"}>
-    <Flex>
-      <AlertIcon />
-      <Box>
-        Your account has been createad successfully. Now you can{" "}
-        <Link href={"/login"}>
-          <ChakraLink color={"blue.500"}>login</ChakraLink>
-        </Link>
-        .
-      </Box>
-    </Flex>
-    <CloseButton
-      alignSelf="flex-start"
-      position="relative"
-      right={-1}
-      top={-1}
-      onClick={onClose}
-    />
-  </Alert>
-);
+import Cookies from "js-cookie";
+import { useRouter } from "next/router";
 
 const Register: NextPage = () => {
   const { isOpen, onClose, onOpen } = useDisclosure();
+  const router = useRouter();
   const toast = useToast();
   const handleSubmit = async ({
     name,
@@ -63,7 +44,18 @@ const Register: NextPage = () => {
   }) => {
     try {
       await axios.post("/api/register", { name, phone, email, password });
-      onOpen();
+      const { data } = await axios.post("/api/login", { email, password });
+      if (data.token) {
+        toast({
+          title: "Success",
+          description: "You have successfully registered",
+          status: "success",
+          duration: 5000,
+          isClosable: true,
+        });
+        Cookies.set("token", data.token);
+        router.push("/");
+      }
     } catch (error) {
       toast({
         title: "Cannot register",
@@ -86,7 +78,6 @@ const Register: NextPage = () => {
         {({ isSubmitting, errors, touched }) => (
           <Form>
             <VStack spacing={8}>
-              {isOpen && <AccountCreatedAlert onClose={onClose} />}
               <ValidatedInput
                 name="name"
                 label="Name"
