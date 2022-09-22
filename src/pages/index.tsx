@@ -9,6 +9,7 @@ import {
   Button,
   Grid,
   GridItem,
+  Spinner,
 } from "@chakra-ui/react";
 import Navbar from "../components/Navbar";
 import React, { useEffect, useState } from "react";
@@ -69,6 +70,7 @@ type User = {
 };
 
 const Home: NextPage<HomeProps> = ({ userId }) => {
+  const [isLoading, setIsLoading] = useState(true);
   const [user, setUser] = useState<User>({
     _id: "",
     name: "",
@@ -79,13 +81,22 @@ const Home: NextPage<HomeProps> = ({ userId }) => {
   });
 
   useEffect(() => {
-    axios
-      .get(`/api/user/${userId}`)
-      .then((res) => {
-        setUser(res.data);
-      })
-      .catch((err) => console.log(err));
+    async function getUserData() {
+      setIsLoading(true);
+      const { data } = await axios.get(`/api/user/${userId}`);
+      setUser(data);
+      setIsLoading(false);
+    }
+    getUserData();
   }, [userId]);
+
+  if (isLoading) {
+    return (
+      <Flex justifyContent="center" alignItems="center" minH="100vh">
+        <Spinner size={"xl"} />
+      </Flex>
+    );
+  }
 
   return (
     <>
@@ -133,7 +144,7 @@ const Home: NextPage<HomeProps> = ({ userId }) => {
             <Text>{user.email}</Text>
           </ProfileInfo>
           <ProfileInfo label="password">
-            <Text>********</Text>
+            <Text>************</Text>
           </ProfileInfo>
           <ProfileInfo label="phone">
             <Text>{user.phone}</Text>
