@@ -9,6 +9,7 @@ import {
   VStack,
   Text,
   Link as ChakraLink,
+  useToast,
 } from "@chakra-ui/react";
 import Link from "next/link";
 import { validateEmail, validatePassword } from "../../utils/validations";
@@ -22,7 +23,10 @@ interface FormInputs {
 
 const Login: NextPage = () => {
   const router = useRouter();
-  const handleSubmit = async ({ email, password }: FormInputs) => {
+  const toast = useToast();
+  const handleSubmit = async (values: FormInputs) => {
+    const email = values.email;
+    const password = values.password;
     if (email && password) {
       try {
         const { data } = await axios.post("/api/login", { email, password });
@@ -31,7 +35,13 @@ const Login: NextPage = () => {
           router.push("/");
         }
       } catch (error) {
-        alert("Invalid credentials");
+        toast({
+          title: "Error",
+          description: "Invalid email or password",
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+        });
       }
     }
   };
@@ -40,8 +50,8 @@ const Login: NextPage = () => {
     <FormCard>
       <Heading mb={10}>Login</Heading>
       <Formik
-        onSubmit={handleSubmit}
         initialValues={{ email: "", password: "" }}
+        onSubmit={handleSubmit}
       >
         {({ isSubmitting, errors, touched }) => (
           <Form>
