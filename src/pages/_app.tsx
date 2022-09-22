@@ -6,6 +6,8 @@ import "@fontsource/noto-sans";
 axios.defaults.baseURL = process.env.VERCEL_URL || process.env.DEV_URL;
 
 const theme = extendTheme({
+  initialColorMode: "light",
+  useSystemColorMode: false,
   fonts: {
     heading: "Noto Sans",
     body: "Noto Sans",
