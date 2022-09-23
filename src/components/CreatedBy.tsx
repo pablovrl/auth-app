@@ -1,5 +1,5 @@
 import { Text, Link } from "@chakra-ui/react";
-export const CreatedBy = () => (
+const CreatedBy = () => (
   <Text
     mt={{ base: 4, md: 2 }}
     mb={{ base: 4, md: 0 }}
@@ -12,3 +12,5 @@ export const CreatedBy = () => (
     </Link>
   </Text>
 );
+
+export default CreatedBy;
