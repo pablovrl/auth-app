@@ -1,6 +1,6 @@
 import React from "react";
 import { Flex, Text, Box, Container } from "@chakra-ui/react";
-import { CreatedBy } from "./CreatedBy";
+import CreatedBy from "./CreatedBy";
 
 export const FormCard = ({ children }: { children: React.ReactNode }) => (
   <Container
