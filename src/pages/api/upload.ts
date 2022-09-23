@@ -22,14 +22,13 @@ handler.post(
     if (!req.file) {
       return res.status(400).json({ error: "File is required" });
     }
-    const { cookie } = req.headers;
-    const token = cookie?.split("=")[1];
-    let user: any = verifyToken(token);
-    const userId = new ObjectId(user._id);
+    const { token } = req.cookies;
+    let user: any = verifyToken(token?.split(" ")[1]);
 
     if (!user) {
       return res.status(401).json({ error: "Unauthorized" });
     }
+    const userId = new ObjectId(user._id);
 
     const { db } = await connecToDatabase();
     user = await db.collection("users").findOne({ _id: userId });
