@@ -7,10 +7,13 @@ import {
   MenuItem,
   MenuButton,
   MenuList,
+  HStack,
+  Text,
 } from "@chakra-ui/react";
 import { logout } from "../../utils/auth";
+import ProfileImage from "./ProfileImage";
 
-const Navbar = ({ name }: { name: string }) => {
+const Navbar = ({ name, photo }: { name: string; photo: string }) => {
   return (
     <Box
       as="nav"
@@ -24,7 +27,12 @@ const Navbar = ({ name }: { name: string }) => {
         <Flex justifyContent={"space-between"} w="100%">
           <Heading fontSize={"lg"}>Auth-App</Heading>
           <Menu>
-            <MenuButton>{name}</MenuButton>
+            <MenuButton>
+              <HStack>
+                <ProfileImage photo={photo} size="30px" />
+                <Text fontSize={"sm"}>{name}</Text>
+              </HStack>
+            </MenuButton>
             <MenuList>
               <MenuItem>My profile</MenuItem>
               <MenuItem onClick={logout}>Logout</MenuItem>
