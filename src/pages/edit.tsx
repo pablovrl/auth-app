@@ -13,6 +13,7 @@ import {
   Button,
   Flex,
   Input,
+  useToast,
 } from "@chakra-ui/react";
 import Loading from "../components/Loading";
 import axios from "axios";
@@ -54,7 +55,7 @@ type EditProps = {
 
 const Edit: NextPage<EditProps> = ({ userId }) => {
   const inputRef = useRef<HTMLInputElement>(null);
-  const router = useRouter();
+  const toast = useToast();
   const [isLoading, setIsLoading] = useState(true);
   const [user, setUser] = useState<User>({
     _id: "",
@@ -101,6 +102,42 @@ const Edit: NextPage<EditProps> = ({ userId }) => {
     }
   };
 
+  const handleSubmit = async ({
+    name,
+    email,
+    password,
+    phone,
+  }: {
+    name: string;
+    email: string;
+    password: string;
+    phone: string;
+  }) => {
+    try {
+      await axios.put("/api/user/" + user._id, {
+        name,
+        email,
+        password,
+        phone,
+      });
+      toast({
+        title: "Profile updated successfully",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
+      getUserData();
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Something went wrong",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+    }
+  };
+
   useEffect(() => {
     getUserData();
   }, [userId]);
@@ -141,7 +178,7 @@ const Edit: NextPage<EditProps> = ({ userId }) => {
           </Button>
         </Flex>
         <Formik
-          onSubmit={() => {}}
+          onSubmit={handleSubmit}
           initialValues={{
             email: user.email,
             password: "",
