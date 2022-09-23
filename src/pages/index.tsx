@@ -2,20 +2,21 @@ import type { GetServerSideProps, NextPage } from "next";
 import { getCookie, verifyToken } from "../../utils/auth";
 import {
   Box,
-  Container,
   Flex,
   Heading,
   Text,
   Button,
   Grid,
   GridItem,
-  Spinner,
 } from "@chakra-ui/react";
-import Navbar from "../components/Navbar";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { CreatedBy } from "../components/CreatedBy";
-
+import Link from "next/link";
+import ProfileLayout from "../components/ProfileLayout";
+import ProfileCard from "../components/ProfileCard";
+import { User } from "../../types/User";
+import Loading from "../components/Loading";
+import ProfileImage from "../components/ProfileImage";
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const token = getCookie(context);
   const payload: any = verifyToken(token);
@@ -60,15 +61,6 @@ type HomeProps = {
   userId: string;
 };
 
-type User = {
-  _id: string;
-  name: string;
-  email: string;
-  password: string;
-  type: string;
-  phone: string;
-};
-
 const Home: NextPage<HomeProps> = ({ userId }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [user, setUser] = useState<User>({
@@ -78,6 +70,7 @@ const Home: NextPage<HomeProps> = ({ userId }) => {
     password: "",
     type: "",
     phone: "",
+    photo: "",
   });
 
   useEffect(() => {
@@ -91,29 +84,17 @@ const Home: NextPage<HomeProps> = ({ userId }) => {
   }, [userId]);
 
   if (isLoading) {
-    return (
-      <Flex justifyContent="center" alignItems="center" minH="100vh">
-        <Spinner size={"xl"} />
-      </Flex>
-    );
+    return <Loading />;
   }
 
   return (
     <>
-      <Navbar name={user.name} />
-      <Container pt={20} pb={5} maxW={{ md: "container.lg" }}>
+      <ProfileLayout username={user.name} photo={user.photo}>
         <Flex flexDir={"column"} alignItems="center">
           <Heading mb={4}>Personal info</Heading>
           <Text>Basic info, like your name and photo</Text>
         </Flex>
-        <Box
-          mt={10}
-          border={{ md: "1px" }}
-          borderRadius={"3xl"}
-          borderColor={{ md: "gray.100" }}
-          px={{ md: 16 }}
-          py={{ md: 8 }}
-        >
+        <ProfileCard mt={10}>
           <Flex alignItems="center">
             <Grid templateColumns="repeat(3, 1fr)" gap={4} w="full">
               <GridItem colSpan={2}>
@@ -128,14 +109,16 @@ const Home: NextPage<HomeProps> = ({ userId }) => {
                 alignItems={"center"}
                 justifyContent="flex-end"
               >
-                <Button variant="outline" w={{ base: "100%", md: "36" }}>
-                  Edit
-                </Button>
+                <Link href={"/edit"}>
+                  <Button variant="outline" w={{ base: "100%", md: "36" }}>
+                    Edit
+                  </Button>
+                </Link>
               </GridItem>
             </Grid>
           </Flex>
           <ProfileInfo label="photo">
-            <Box bgColor={"gray.300"} w={"20"} h={20} />
+            <ProfileImage photo={user.photo} size="100px" />
           </ProfileInfo>
           <ProfileInfo label="name">
             <Text>{user.name}</Text>
@@ -149,9 +132,8 @@ const Home: NextPage<HomeProps> = ({ userId }) => {
           <ProfileInfo label="phone">
             <Text>{user.phone}</Text>
           </ProfileInfo>
-        </Box>
-        <CreatedBy />
-      </Container>
+        </ProfileCard>
+      </ProfileLayout>
     </>
   );
 };
