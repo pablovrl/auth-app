@@ -3,8 +3,9 @@
 Web application created to learn how authentication (using cookies) and protected routes works.
 
 ## To Do's
-- [ ] Upload user image.
-- [ ] Update user personal info.
+
+- [x] Upload user image.
+- [x] Update user personal info.
 
 ## Built With
 
