@@ -53,7 +53,7 @@ const Login: NextPage = () => {
         initialValues={{ email: "", password: "" }}
         onSubmit={handleSubmit}
       >
-        {({ isSubmitting, errors, touched }) => (
+        {({ isSubmitting, errors, touched, values }) => (
           <Form>
             <VStack spacing={8}>
               <ValidatedInput
@@ -67,7 +67,7 @@ const Login: NextPage = () => {
               <ValidatedInput
                 name="password"
                 label="Password"
-                validate={validatePassword}
+                validate={() => validatePassword(values.password, true)}
                 errors={errors.password}
                 touched={touched.password}
                 type="password"

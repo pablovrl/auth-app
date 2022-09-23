@@ -8,11 +8,11 @@ export function validateEmail(value: string) {
   return error;
 }
 
-export function validatePassword(value: string) {
+export function validatePassword(value: string, isRequired: boolean = false) {
   let error;
-  if (!value) {
+  if (!value && isRequired) {
     error = "Password is required";
-  } else if (value.length < 8) {
+  } else if (value.length > 0 && value.length < 8) {
     error = "Password must be at least 8 characters";
   }
   return error;

@@ -1,17 +1,11 @@
 import type { NextPage } from "next";
 import { FormCard } from "../components/FormCard";
 import {
-  Box,
-  Flex,
   Heading,
   VStack,
   Text,
   Button,
   Link as ChakraLink,
-  Alert,
-  AlertIcon,
-  CloseButton,
-  useDisclosure,
   useToast,
 } from "@chakra-ui/react";
 import Link from "next/link";
@@ -28,7 +22,6 @@ import Cookies from "js-cookie";
 import { useRouter } from "next/router";
 
 const Register: NextPage = () => {
-  const { isOpen, onClose, onOpen } = useDisclosure();
   const router = useRouter();
   const toast = useToast();
   const handleSubmit = async ({
@@ -75,7 +68,7 @@ const Register: NextPage = () => {
         onSubmit={handleSubmit}
         initialValues={{ email: "", password: "", name: "", phone: "" }}
       >
-        {({ isSubmitting, errors, touched }) => (
+        {({ isSubmitting, errors, touched, values }) => (
           <Form>
             <VStack spacing={8}>
               <ValidatedInput
@@ -105,7 +98,7 @@ const Register: NextPage = () => {
               <ValidatedInput
                 name="password"
                 label="Password"
-                validate={validatePassword}
+                validate={() => validatePassword(values.password, true)}
                 errors={errors.password}
                 touched={touched.password}
                 type="password"
