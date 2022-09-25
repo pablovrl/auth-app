@@ -4,7 +4,7 @@ const ProfileImage = ({ photo, size }: { photo: string; size: any }) => {
     <Box>
       {photo ? (
         <Image
-          src={"/" + photo}
+          src={"/api/image/" + photo}
           alt="profile"
           w={size}
           h={size}
